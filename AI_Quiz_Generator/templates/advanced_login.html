@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - QuizAI 3D Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/advanced_3d.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Additional 3D styles for login page */
+        .login-3d-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1500px;
+            transform-style: preserve-3d;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-3d-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(240, 147, 251, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(79, 172, 254, 0.3) 0%, transparent 50%);
+            animation: backgroundPulse 10s ease-in-out infinite;
+            z-index: -2;
+        }
+        
+        @keyframes backgroundPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(180deg); }
+        }
+        
+        .login-3d-form-container {
+            position: relative;
+            z-index: 10;
+            transform-style: preserve-3d;
+            animation: formFloat 6s ease-in-out infinite;
+        }
+        
+        @keyframes formFloat {
+            0%, 100% { transform: translateZ(50px) translateY(0px) rotateX(0deg); }
+            50% { transform: translateZ(80px) translateY(-20px) rotateX(2deg); }
+        }
+        
+        .login-3d-form {
+            background: var(--glass-3d);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border-3d);
+            border-radius: var(--radius-xl);
+            padding: 4rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: var(--shadow-hover-3d);
+            transform: translateZ(30px);
+            transform-style: preserve-3d;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-3d-form::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 25px 25px;
+            animation: rotatePattern 30s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes rotatePattern {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .login-3d-form::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transform: translateZ(-5px);
+            pointer-events: none;
+        }
+        
+        .login-3d-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            transform: translateZ(20px);
+        }
+        
+        .login-3d-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: var(--primary-3d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleShine 3s ease-in-out infinite;
+        }
+        
+        @keyframes titleShine {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .login-3d-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            transform: translateZ(10px);
+        }
+        
+        .form-group-3d {
+            margin-bottom: 2rem;
+            transform: translateZ(15px);
+            position: relative;
+        }
+        
+        .form-group-3d label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            transform: translateZ(5px);
+        }
+        
+        .form-group-3d input {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid var(--glass-border-3d);
+            border-radius: var(--radius-md);
+            background: var(--glass-3d);
+            backdrop-filter: blur(10px);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition-3d);
+            transform: translateZ(8px);
+            transform-style: preserve-3d;
+        }
+        
+        .form-group-3d input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 40px rgba(102, 126, 234, 0.6);
+            transform: translateZ(15px) scale(1.02);
+        }
+        
+        .form-group-3d input::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .password-toggle-3d {
+            position: relative;
+        }
+        
+        .password-toggle-3d button {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition-smooth);
+            transform: translateZ(5px);
+        }
+        
+        .password-toggle-3d button:hover {
+            color: #667eea;
+            transform: translateY(-50%) translateZ(8px) scale(1.1);
+        }
+        
+        .form-options-3d {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            transform: translateZ(10px);
+        }
+        
+        .form-options-3d label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .form-options-3d input[type="checkbox"] {
+            margin-right: 0.8rem;
+            transform: translateZ(3px);
+        }
+        
+        .form-options-3d a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+            transform: translateZ(3px);
+        }
+        
+        .form-options-3d a:hover {
+            color: #4facfe;
+            transform: translateZ(6px);
+        }
+        
+        .btn-3d-login {
+            width: 100%;
+            padding: 1.5rem;
+            background: var(--primary-3d);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-3d);
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+            transform: translateZ(15px);
+            transform-style: preserve-3d;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-3d-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-3d-login:hover {
+            transform: translateZ(25px) translateY(-3px) rotateX(2deg) scale(1.05);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.6);
+        }
+        
+        .btn-3d-login:hover::before {
+            left: 100%;
+        }
+        
+        .btn-3d-login:active {
+            transform: translateZ(10px) translateY(-1px) scale(0.98);
+        }
+        
+        .divider-3d {
+            text-align: center;
+            margin: 2rem 0;
+            position: relative;
+            transform: translateZ(10px);
+        }
+        
+        .divider-3d::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--glass-border-3d);
+        }
+        
+        .divider-3d span {
+            background: var(--glass-3d);
+            backdrop-filter: blur(20px);
+            padding: 0 1.5rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        
+        .demo-buttons-3d {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            transform: translateZ(10px);
+        }
+        
+        .demo-btn-3d {
+            flex: 1;
+            padding: 1rem;
+            background: var(--glass-3d);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border-3d);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition-3d);
+            font-weight: 600;
+            transform: translateZ(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .demo-btn-3d:hover {
+            background: var(--glass-border-3d);
+            transform: translateZ(10px) translateY(-2px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .register-link-3d {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-secondary);
+            transform: translateZ(8px);
+        }
+        
+        .register-link-3d a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+        
+        .register-link-3d a:hover {
+            color: #4facfe;
+        }
+        
+        /* 3D Notification styles */
+        .notification-3d {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            backdrop-filter: blur(20px);
+            border: 1px solid;
+            transform: translateZ(50px);
+            animation: slideInNotification 0.5s ease-out;
+            transform-style: preserve-3d;
+        }
+        
+        @keyframes slideInNotification {
+            0% { transform: translateZ(-50px) translateX(100px) rotateY(90deg); opacity: 0; }
+            100% { transform: translateZ(50px) translateX(0) rotateY(0deg); opacity: 1; }
+        }
+        
+        .notification-success-3d {
+            background: rgba(67, 233, 123, 0.2);
+            border-color: rgba(67, 233, 123, 0.5);
+            color: #43e97b;
+            box-shadow: 0 0 30px rgba(67, 233, 123, 0.4);
+        }
+        
+        .notification-error-3d {
+            background: rgba(245, 87, 108, 0.2);
+            border-color: rgba(245, 87, 108, 0.5);
+            color: #f5576c;
+            box-shadow: 0 0 30px rgba(245, 87, 108, 0.4);
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .login-3d-form {
+                margin: 1rem;
+                padding: 2rem;
+                transform: translateZ(20px);
+            }
+            
+            .login-3d-title {
+                font-size: 2rem;
+            }
+            
+            .form-options-3d {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            
+            .demo-buttons-3d {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Background -->
+    <div class="login-3d-background"></div>
+    
+    <!-- 3D Navigation -->
+    <header class="navbar-3d">
+        <div class="logo">
+            <h2><i class="fas fa-brain"></i> QuizAI 3D</h2>
+        </div>
+        <div class="nav-links-3d">
+            <a href="/"><i class="fas fa-home"></i> Home</a>
+            <a href="/register" class="btn-3d"><i class="fas fa-user-plus"></i> Register</a>
+        </div>
+    </header>
+
+    <!-- 3D Login Container -->
+    <div class="login-3d-container">
+        <div class="login-3d-form-container">
+            <form class="login-3d-form" id="loginForm">
+                <div class="login-3d-header">
+                    <h2 class="login-3d-title">Welcome Back</h2>
+                    <p class="login-3d-subtitle">Enter your credentials to access your 3D learning dashboard</p>
+                </div>
+
+                <div class="form-group-3d">
+                    <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                </div>
+
+                <div class="form-group-3d">
+                    <label for="password"><i class="fas fa-lock"></i> Password</label>
+                    <div class="password-toggle-3d">
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                        <button type="button" id="togglePassword">
+                            <i class="fas fa-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-options-3d">
+                    <label>
+                        <input type="checkbox" name="remember">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn-3d-login">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+
+                <div class="divider-3d">
+                    <span>OR</span>
+                </div>
+
+                <div class="demo-buttons-3d">
+                    <button type="button" class="demo-btn-3d" onclick="demoLogin('student')">
+                        <i class="fas fa-graduation-cap"></i> Student Demo
+                    </button>
+                    <button type="button" class="demo-btn-3d" onclick="demoLogin('teacher')">
+                        <i class="fas fa-chalkboard-teacher"></i> Teacher Demo
+                    </button>
+                </div>
+
+                <div class="register-link-3d">
+                    <p>Don't have an account? <a href="/register">Sign Up</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Include 3D JavaScript -->
+    <script src="{{ url_for('static', filename='js/advanced_3d.js') }}"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize 3D effects
+            if (window.advanced3D) {
+                window.advanced3D.add3DEffect('.login-3d-form', 'float');
+                window.advanced3D.add3DEffect('.demo-btn-3d', 'pulse');
+            }
+            
+            // Password toggle functionality
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                // Toggle icon with 3D effect
+                if (type === 'password') {
+                    toggleIcon.classList.remove('fa-eye-slash');
+                    toggleIcon.classList.add('fa-eye');
+                } else {
+                    toggleIcon.classList.remove('fa-eye');
+                    toggleIcon.classList.add('fa-eye-slash');
+                }
+                
+                // Add 3D animation
+                this.style.transform = 'translateZ(10px) rotateY(180deg)';
+                setTimeout(() => {
+                    this.style.transform = 'translateZ(5px) rotateY(0deg)';
+                }, 300);
+            });
+
+            // Demo login functionality
+            function demoLogin(role) {
+                const emailInput = document.getElementById('email');
+                const passwordInput = document.getElementById('password');
+                
+                // Add 3D typing effect
+                const typeWithEffect = (input, value) => {
+                    input.value = '';
+                    let index = 0;
+                    const typeInterval = setInterval(() => {
+                        if (index < value.length) {
+                            input.value += value[index];
+                            index++;
+                            // Add subtle 3D effect during typing
+                            input.style.transform = `translateZ(${8 + Math.random() * 2}px) scale(${1.01})`;
+                            setTimeout(() => {
+                                input.style.transform = 'translateZ(8px) scale(1)';
+                            }, 50);
+                        } else {
+                            clearInterval(typeInterval);
+                        }
+                    }, 100);
+                };
+                
+                if (role === 'student') {
+                    typeWithEffect(emailInput, 'student@demo.com');
+                    typeWithEffect(passwordInput, 'student123');
+                } else if (role === 'teacher') {
+                    typeWithEffect(emailInput, 'teacher@demo.com');
+                    typeWithEffect(passwordInput, 'teacher123');
+                }
+                
+                // Visual feedback
+                emailInput.style.borderColor = '#4facfe';
+                passwordInput.style.borderColor = '#4facfe';
+                
+                setTimeout(() => {
+                    emailInput.style.borderColor = '';
+                    passwordInput.style.borderColor = '';
+                }, 2000);
+                
+                // Play 3D sound effect if available
+                if (window.advanced3D) {
+                    window.advanced3D.play3DSound('hover');
+                }
+            }
+
+            // Form submission with AJAX
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                // Basic validation with 3D effects
+                if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                    showNotification('Please enter a valid email address', 'error');
+                    shakeForm();
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    showNotification('Password must be at least 6 characters long', 'error');
+                    shakeForm();
+                    return;
+                }
+                
+                // Show loading state
+                const submitBtn = this.querySelector('.btn-3d-login');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+                submitBtn.disabled = true;
+                submitBtn.style.transform = 'translateZ(20px) scale(0.95)';
+                
+                // Send AJAX request
+                fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        'email': email,
+                        'password': password
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showNotification('Login successful! Redirecting...', 'success');
+                        // 3D success animation
+                        submitBtn.style.background = 'var(--success-3d)';
+                        submitBtn.style.transform = 'translateZ(30px) scale(1.1)';
+                        
+                        setTimeout(() => {
+                            window.location.href = data.redirect;
+                        }, 1500);
+                    } else {
+                        showNotification(data.message || 'Login failed', 'error');
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                        submitBtn.style.transform = 'translateZ(15px) scale(1)';
+                        shakeForm();
+                    }
+                })
+                .catch(error => {
+                    console.error('Login error:', error);
+                    showNotification('An error occurred during login', 'error');
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    submitBtn.style.transform = 'translateZ(15px) scale(1)';
+                    shakeForm();
+                });
+            });
+
+            // 3D shake effect for errors
+            function shakeForm() {
+                const form = document.querySelector('.login-3d-form-container');
+                form.style.animation = 'shake3D 0.5s ease-in-out';
+                setTimeout(() => {
+                    form.style.animation = '';
+                }, 500);
+            }
+
+            // Notification system
+            function showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `notification-3d notification-${type}-3d`;
+                notification.innerHTML = `
+                    <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i>
+                    ${message}
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Auto remove with 3D animation
+                setTimeout(() => {
+                    notification.style.transform = 'translateZ(-50px) translateX(100px) rotateY(90deg)';
+                    notification.style.opacity = '0';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 500);
+                }, 4000);
+            }
+
+            // Remember me functionality
+            const rememberCheckbox = document.querySelector('input[name="remember"]');
+            const emailInput = document.getElementById('email');
+            
+            // Check if email was saved
+            const savedEmail = localStorage.getItem('rememberedEmail');
+            if (savedEmail) {
+                emailInput.value = savedEmail;
+                rememberCheckbox.checked = true;
+            }
+            
+            // Save email if remember is checked
+            document.getElementById('loginForm').addEventListener('submit', function() {
+                if (rememberCheckbox.checked) {
+                    localStorage.setItem('rememberedEmail', emailInput.value);
+                } else {
+                    localStorage.removeItem('rememberedEmail');
+                }
+            });
+
+            // Add 3D mouse tracking effect
+            document.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 20;
+                const y = (e.clientY / window.innerHeight - 0.5) * 20;
+                
+                const form = document.querySelector('.login-3d-form');
+                form.style.transform = `translateZ(${30 + Math.abs(x) + Math.abs(y)}px) rotateX(${-y}deg) rotateY(${x}deg)`;
+            });
+        });
+
+        // Add 3D shake animation
+        const shakeStyle = document.createElement('style');
+        shakeStyle.textContent = `
+            @keyframes shake3D {
+                0%, 100% { transform: translateZ(50px) translateX(0) rotateY(0deg); }
+                10%, 30%, 50%, 70%, 90% { transform: translateZ(50px) translateX(-10px) rotateY(-5deg); }
+                20%, 40%, 60%, 80% { transform: translateZ(50px) translateX(10px) rotateY(5deg); }
+            }
+        `;
+        document.head.appendChild(shakeStyle);
+    </script>
+</body>
+</html>

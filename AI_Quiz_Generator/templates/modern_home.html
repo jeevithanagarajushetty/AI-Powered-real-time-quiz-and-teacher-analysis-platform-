@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Quiz Platform - Revolutionizing Learning</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/professional-style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="logo">
+            <h2><i class="fas fa-brain"></i> QuizAI Pro</h2>
+        </div>
+        <div class="nav-links">
+            <a href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>AI-Powered Real-Time<br>Adaptive Quiz Platform</h1>
+            <p>Transform your classroom experience with intelligent quiz generation, real-time monitoring, and comprehensive analytics designed for modern education.</p>
+            <div class="hero-buttons">
+                <a href="/register" class="main-btn">
+                    <i class="fas fa-rocket"></i> Get Started
+                </a>
+            </div>
+        </div>
+        
+        <!-- Floating Animation Elements -->
+        <div class="floating-elements">
+            <div class="floating-card" style="position: absolute; top: 20%; left: 10%; animation: float 6s ease-in-out infinite;">
+                <i class="fas fa-graduation-cap" style="font-size: 2rem; color: #667eea;"></i>
+            </div>
+            <div class="floating-card" style="position: absolute; top: 30%; right: 15%; animation: float 8s ease-in-out infinite;">
+                <i class="fas fa-chart-line" style="font-size: 2rem; color: #f093fb;"></i>
+            </div>
+            <div class="floating-card" style="position: absolute; bottom: 30%; left: 20%; animation: float 7s ease-in-out infinite;">
+                <i class="fas fa-trophy" style="font-size: 2rem; color: #4facfe;"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Powerful Features</h2>
+            <p style="color: var(--text-secondary); font-size: 1.1rem;">Everything you need for modern digital education</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-robot" style="font-size: 3rem; margin-bottom: 1rem; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            </div>
+            <h3>AI-Powered Generation</h3>
+            <p>Automatically generate intelligent quizzes from any content using advanced AI technology. Save hours of manual preparation time.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-eye" style="font-size: 3rem; margin-bottom: 1rem; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            </div>
+            <h3>Real-time Monitoring</h3>
+            <p>Track student progress, detect malpractice, and get instant insights with our advanced monitoring and analytics dashboard.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-chart-bar" style="font-size: 3rem; margin-bottom: 1rem; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            </div>
+            <h3>Advanced Analytics</h3>
+            <p>Comprehensive reporting and performance analytics help identify learning gaps and improve educational outcomes.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-mobile-alt" style="font-size: 3rem; margin-bottom: 1rem; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            </div>
+            <h3>Mobile Friendly</h3>
+            <p>Access quizzes from any device with our responsive design. Perfect for both classroom and remote learning environments.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-lock" style="font-size: 3rem; margin-bottom: 1rem; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            </div>
+            <h3>Secure Platform</h3>
+            <p>Enterprise-grade security ensures your data and quizzes are always protected with advanced encryption and privacy controls.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-users" style="font-size: 3rem; margin-bottom: 1rem; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            </div>
+            <h3>Collaborative Learning</h3>
+            <p>Foster teamwork and collaborative learning environments with group quizzes and shared study resources.</p>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number">10K+</div>
+                <div class="stat-label">Active Users</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">50K+</div>
+                <div class="stat-label">Quizzes Created</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">1M+</div>
+                <div class="stat-label">Questions Generated</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">99.9%</div>
+                <div class="stat-label">Uptime</div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add parallax effect to floating elements
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const floatingCards = document.querySelectorAll('.floating-card');
+            
+            floatingCards.forEach((card, index) => {
+                const speed = 0.5 + (index * 0.1);
+                card.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
+            <p style="color: var(--text-secondary); font-size: 1.1rem;">Everything you need for modern digital education</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-file-upload" style="font-size: 3rem; margin-bottom: 1rem; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            </div>
+            <h3>Multi-Format Upload</h3>
+            <p>Upload PDFs, PowerPoint presentations, YouTube links, and any teaching materials. Our AI extracts key concepts to generate intelligent questions.</p>
+            <ul style="text-align: left; margin-top: 1rem; color: var(--text-secondary);">
+                <li><i class="fas fa-check-circle" style="color: #4facfe;"></i> PDF & Document Support</li>
+                <li><i class="fas fa-check-circle" style="color: #4facfe;"></i> YouTube Integration</li>
+                <li><i class="fas fa-check-circle" style="color: #4facfe;"></i> Smart Content Analysis</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-brain" style="font-size: 3rem; margin-bottom: 1rem; background: var(--secondary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            </div>
+            <h3>AI Quiz Generation</h3>
+            <p>Advanced AI algorithms create contextual questions based on your teaching materials. Choose difficulty levels and customize quiz parameters.</p>
+            <ul style="text-align: left; margin-top: 1rem; color: var(--text-secondary);">
+                <li><i class="fas fa-check-circle" style="color: #f093fb;"></i> Multiple Question Types</li>
+                <li><i class="fas fa-check-circle" style="color: #f093fb;"></i> Difficulty Levels</li>
+                <li><i class="fas fa-check-circle" style="color: #f093fb;"></i> Context-Aware Generation</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-shield-alt" style="font-size: 3rem; margin-bottom: 1rem; background: var(--success-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            </div>
+            <h3>Real-Time Monitoring</h3>
+            <p>Advanced malactivity detection system monitors student behavior during quizzes. Automatic warnings and submission for unfair practices.</p>
+            <ul style="text-align: left; margin-top: 1rem; color: var(--text-secondary);">
+                <li><i class="fas fa-check-circle" style="color: #4facfe;"></i> Tab Switch Detection</li>
+                <li><i class="fas fa-check-circle" style="color: #4facfe;"></i> Warning System</li>
+                <li><i class="fas fa-check-circle" style="color: #4facfe;"></i> Auto-Submit Protection</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-chart-bar" style="font-size: 3rem; margin-bottom: 1rem; background: var(--warning-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            </div>
+            <h3>Analytics Dashboard</h3>
+            <p>Comprehensive analytics for teachers to track student performance, identify learning gaps, and improve teaching effectiveness.</p>
+            <ul style="text-align: left; margin-top: 1rem; color: var(--text-secondary);">
+                <li><i class="fas fa-check-circle" style="color: #fa709a;"></i> Performance Tracking</li>
+                <li><i class="fas fa-check-circle" style="color: #fa709a;"></i> Learning Analytics</li>
+                <li><i class="fas fa-check-circle" style="color: #fa709a;"></i> Progress Reports</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-trophy" style="font-size: 3rem; margin-bottom: 1rem; background: var(--dark-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            </div>
+            <h3>Result Board & Rankings</h3>
+            <p>Instant result generation with student rankings. Celebrate top performers and motivate healthy competition among students.</p>
+            <ul style="text-align: left; margin-top: 1rem; color: var(--text-secondary);">
+                <li><i class="fas fa-check-circle" style="color: #30cfd0;"></i> Live Rankings</li>
+                <li><i class="fas fa-check-circle" style="color: #30cfd0;"></i> Performance Badges</li>
+                <li><i class="fas fa-check-circle" style="color: #30cfd0;"></i> Detailed Reports</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-users" style="font-size: 3rem; margin-bottom: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            </div>
+            <h3>Multi-Role System</h3>
+            <p>Dedicated interfaces for students, teachers, and admin. Comprehensive role management for educational institutions.</p>
+            <ul style="text-align: left; margin-top: 1rem; color: var(--text-secondary);">
+                <li><i class="fas fa-check-circle" style="color: #667eea;"></i> Student Portal</li>
+                <li><i class="fas fa-check-circle" style="color: #667eea;"></i> Teacher Dashboard</li>
+                <li><i class="fas fa-check-circle" style="color: #667eea;"></i> Admin Control</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="stats-section" style="padding: 4rem 2rem; text-align: center;">
+        <h2 style="font-size: 2.5rem; margin-bottom: 3rem; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Platform Impact</h2>
+        <div class="dashboard-grid" style="max-width: 1200px; margin: 0 auto;">
+            <div class="stat-card">
+                <div class="stat-number" data-target="10000">0</div>
+                <div class="stat-label">Students Engaged</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="500">0</div>
+                <div class="stat-label">Teachers Using</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="50000">0</div>
+                <div class="stat-label">Quizzes Generated</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="95">0%</div>
+                <div class="stat-label">Satisfaction Rate</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" style="padding: 4rem 2rem;">
+        <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">How It Works</h2>
+            <p style="color: var(--text-secondary); font-size: 1.1rem;">Simple 4-step process to create and conduct quizzes</p>
+        </div>
+
+        <div class="workflow" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto;">
+            <div class="step-card" style="background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: var(--border-radius); padding: 2rem; text-align: center; transition: var(--transition);">
+                <div class="step-number" style="width: 50px; height: 50px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem; font-weight: 700;">1</div>
+                <h3 style="margin-bottom: 1rem;">Upload Materials</h3>
+                <p style="color: var(--text-secondary);">Teachers upload PDFs, PPTs, or YouTube links used in class</p>
+            </div>
+
+            <div class="step-card" style="background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: var(--border-radius); padding: 2rem; text-align: center; transition: var(--transition);">
+                <div class="step-number" style="width: 50px; height: 50px; background: var(--secondary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem; font-weight: 700;">2</div>
+                <h3 style="margin-bottom: 1rem;">Generate Quiz</h3>
+                <p style="color: var(--text-secondary);">AI analyzes content and generates questions with unique quiz code</p>
+            </div>
+
+            <div class="step-card" style="background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: var(--border-radius); padding: 2rem; text-align: center; transition: var(--transition);">
+                <div class="step-number" style="width: 50px; height: 50px; background: var(--success-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem; font-weight: 700;">3</div>
+                <h3 style="margin-bottom: 1rem;">Students Attend</h3>
+                <p style="color: var(--text-secondary);">Students enter quiz code and take the quiz with real-time monitoring</p>
+            </div>
+
+            <div class="step-card" style="background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: var(--border-radius); padding: 2rem; text-align: center; transition: var(--transition);">
+                <div class="step-number" style="width: 50px; height: 50px; background: var(--warning-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem; font-weight: 700;">4</div>
+                <h3 style="margin-bottom: 1rem;">View Results</h3>
+                <p style="color: var(--text-secondary);">Instant results with rankings and detailed performance analytics</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 3rem 2rem; border-top: 1px solid var(--glass-border); margin-top: 4rem;">
+        <p style="color: var(--text-secondary);">&copy; 2024 QuizAI Pro - Transforming Education with AI</p>
+        <div style="margin-top: 1rem;">
+            <i class="fas fa-brain" style="color: #667eea; margin: 0 0.5rem;"></i>
+            <i class="fas fa-graduation-cap" style="color: #f093fb; margin: 0 0.5rem;"></i>
+            <i class="fas fa-trophy" style="color: #4facfe; margin: 0 0.5rem;"></i>
+        </div>
+    </footer>
+
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .step-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-buttons {
+            margin-top: 2rem;
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+    </style>
+
+    <script>
+        // Animated Counter
+        function animateCounter() {
+            const counters = document.querySelectorAll('.stat-number');
+            const speed = 200;
+
+            counters.forEach(counter => {
+                const animate = () => {
+                    const value = +counter.getAttribute('data-target');
+                    const data = +counter.innerText;
+                    const time = value / speed;
+
+                    if (data < value) {
+                        counter.innerText = Math.ceil(data + time);
+                        setTimeout(animate, 1);
+                    } else {
+                        counter.innerText = value.toLocaleString();
+                    }
+                }
+                animate();
+            });
+        }
+
+        // Trigger animation when page loads
+        window.addEventListener('load', animateCounter);
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add parallax effect to floating elements
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const floatingCards = document.querySelectorAll('.floating-card');
+            
+            floatingCards.forEach((card, index) => {
+                const speed = 0.5 + (index * 0.1);
+                card.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
