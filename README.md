@@ -19,10 +19,10 @@ This project is an intelligent quiz platform designed to conduct real-time asses
 
 ## 🛠️ Tech Stack
 
-* **Frontend:** HTML, CSS, Bootstrap
+* **Frontend:** HTML, CSS,javascripts
 * **Backend:** Flask (Python)
-* **Database:** MongoDB / SQL
-* **Other:** Machine Learning (for analysis), Charts/Graphs
+* **Database:** MongoDB 
+* **Other:** Machine Learning (for analysis)
 
 ---
 
@@ -36,7 +36,9 @@ This project is an intelligent quiz platform designed to conduct real-time asses
 
 ## 📷 Screenshots
 
-(Add screenshots of your UI here — quiz page, dashboard, results)
+<img width="1920" height="1080" alt="Screenshot (23)" src="https://github.com/user-attachments/assets/ed9ba31a-155f-4e75-b93e-4268e6584629" />
+
+
 
 ---
 
