@@ -36,7 +36,20 @@ This project is an intelligent quiz platform designed to conduct real-time asses
 
 ## 📷 Screenshots
 
-<img width="1920" height="1080" alt="Screenshot (23)" src="https://github.com/user-attachments/assets/ed9ba31a-155f-4e75-b93e-4268e6584629" />
+<img width="1518" height="731" alt="image" src="https://github.com/user-attachments/assets/dc5c9188-2d1f-4949-96dd-8f3ffb636e38" />
+<img width="1516" height="713" alt="image" src="https://github.com/user-attachments/assets/8b3867f9-1d30-4559-9c95-a7332c48460a" />
+<img width="1521" height="719" alt="image" src="https://github.com/user-attachments/assets/46fecfd8-82c6-4aee-853c-b951ab36a871" />
+<img width="1514" height="723" alt="image" src="https://github.com/user-attachments/assets/fb1393f3-57fe-4c4e-a150-2fe66278ded1" />
+<img width="1517" height="727" alt="image" src="https://github.com/user-attachments/assets/8b3a1acc-1bb3-455c-ac7f-2d067434b36b" />
+<img width="1513" height="733" alt="image" src="https://github.com/user-attachments/assets/ff4d5971-7271-4aa8-af9b-7e3faf59cc35" />
+<img width="1501" height="282" alt="image" src="https://github.com/user-attachments/assets/5f540bf2-f7e9-44c2-b679-d9c440491c95" />
+<img width="1518" height="728" alt="image" src="https://github.com/user-attachments/assets/96d753fa-706d-45fb-a7af-cde774ce421f" />
+
+
+
+
+
+
 
 
 
