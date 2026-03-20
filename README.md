@@ -101,7 +101,7 @@ http://127.0.0.1:5000/
 ## 👩‍💻 Author
 
 **Jeevitha M N**
-MCA Student | AI Enthusiast | Full Stack Developer
+MCA Student
 
 ---
 
