@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - AI Quiz Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/professional-style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .bg-animation span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            animation: move 25s linear infinite;
+            bottom: -150px;
+        }
+
+        .bg-animation span:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+
+        .bg-animation span:nth-child(2) {
+            left: 10%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 2s;
+            animation-duration: 12s;
+        }
+
+        .bg-animation span:nth-child(3) {
+            left: 70%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 4s;
+        }
+
+        .bg-animation span:nth-child(4) {
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 0s;
+            animation-duration: 18s;
+        }
+
+        .bg-animation span:nth-child(5) {
+            left: 65%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 0s;
+        }
+
+        @keyframes move {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 0;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand i {
+            margin-right: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Main Container */
+        .dashboard-container {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-subtitle {
+            color: #6c757d;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Action Cards */
+        .actions-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title i {
+            margin-right: 0.75rem;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .action-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+
+        .action-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .action-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .action-card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .action-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover .action-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .action-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.75rem;
+            color: #2c3e50;
+        }
+
+        .action-description {
+            color: #6c757d;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .action-arrow {
+            color: #667eea;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover .action-arrow {
+            transform: translateX(5px);
+        }
+
+        /* Recent Activity */
+        .activity-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .activity-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+        }
+
+        .activity-title i {
+            margin-right: 0.75rem;
+            color: #667eea;
+        }
+
+        .activity-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .activity-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title-text {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-meta {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .activity-score {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 1rem;
+            }
+
+            .welcome-title {
+                font-size: 2rem;
+            }
+
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+
+            .activity-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .activity-icon {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/student">
+                <i class="fas fa-graduation-cap"></i>
+                AI Quiz Platform
+            </a>
+            <div class="user-info">
+                <span>
+                    <i class="fas fa-user-circle me-2"></i>
+                    Student
+                </span>
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <a href="/logout" class="btn btn-outline-light btn-sm">
+                    <i class="fas fa-sign-out-alt me-1"></i>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard -->
+    <div class="dashboard-container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <div class="welcome-content">
+                <h1 class="welcome-title">Welcome to Your Dashboard!</h1>
+                <p class="welcome-subtitle">Ready to challenge yourself with amazing quizzes? Let's get started!</p>
+                
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalQuizzes">0</span>
+                        <div class="stat-label">Total Quizzes</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="completedQuizzes">0</span>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="notAttendedQuizzes">0</span>
+                        <div class="stat-label">Not Attended</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="averageScore">0%</span>
+                        <div class="stat-label">Average Score</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="actions-section">
+            <h2 class="section-title">
+                <i class="fas fa-rocket"></i>
+                Quick Actions
+            </h2>
+            <div class="actions-grid">
+                <a href="/attend_quiz" class="action-card">
+                    <div class="action-card-content">
+                        <div class="action-icon">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <h3 class="action-title">Join Quiz</h3>
+                        <p class="action-description">Enter a quiz code and start challenging yourself with interactive questions.</p>
+                        <div class="action-arrow">
+                            Start Now <i class="fas fa-arrow-right ms-2"></i>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/leaderboard" class="action-card">
+                    <div class="action-card-content">
+                        <div class="action-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h3 style="color: black;">Leaderboard</h3>
+                        <p style="color: black;">View real-time rankings and top performers</p>
+                        <div class="action-arrow">
+                            View Rankings <i class="fas fa-arrow-right ms-2"></i>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="#" class="action-card" onclick="showDetailedProgress(); return false;">
+                    <div class="action-card-content">
+                        <div class="action-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Detailed Progress</h3>
+                        <p style="color: black;">Comprehensive analytics of your quiz performance and learning journey</p>
+                        <div class="action-arrow">
+                            View Analytics <i class="fas fa-arrow-right ms-2"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="activity-section">
+            <div class="activity-header">
+                <h2 class="activity-title">
+                    <i class="fas fa-history"></i>
+                    Recent Quiz Activity
+                </h2>
+            </div>
+            
+            <div class="activity-list" id="activityList">
+                {% if attempts %}
+                    {% for attempt in attempts %}
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            {% if attempt.status == 'completed' %}
+                                <i class="fas fa-check-circle" style="color: var(--accent-emerald);"></i>
+                            {% elif attempt.status == 'in_progress' %}
+                                <i class="fas fa-clock" style="color: var(--warning-amber);"></i>
+                            {% elif attempt.status == 'expired' %}
+                                <i class="fas fa-hourglass-end" style="color: var(--danger-red);"></i>
+                            {% else %}
+                                <i class="fas fa-times-circle" style="color: var(--neutral-gray);"></i>
+                            {% endif %}
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title-text">
+                                Quiz: {{ attempt.quiz_code|upper }}
+                            </div>
+                            <div class="activity-meta">
+                                {% if attempt.started_at %}
+                                    Started: {{ attempt.started_at.strftime('%B %d, %Y at %I:%M %p') }}
+                                {% else %}
+                                    <span style="color: var(--neutral-gray);">Not Started</span>
+                                {% endif %}
+                                {% if attempt.completed_at %}
+                                    • Completed: {{ attempt.completed_at.strftime('%B %d, %Y at %I:%M %p') }}
+                                {% endif %}
+                            </div>
+                            <div style="margin-top: 0.5rem;">
+                                {% if attempt.status == 'completed' %}
+                                    <span style="color: var(--accent-emerald); font-weight: 500;">
+                                        <i class="fas fa-check-circle me-1"></i>Already Attended
+                                    </span>
+                                {% elif attempt.status == 'in_progress' %}
+                                    <span style="color: var(--warning-amber); font-weight: 500;">
+                                        <i class="fas fa-clock me-1"></i>In Progress
+                                    </span>
+                                {% elif attempt.status == 'expired' %}
+                                    <span style="color: var(--danger-red); font-weight: 500;">
+                                        <i class="fas fa-hourglass-end me-1"></i>Quiz Expired
+                                    </span>
+                                {% elif not attempt.started_at %}
+                                    <span style="color: var(--neutral-gray); font-weight: 500;">
+                                        <i class="fas fa-times-circle me-1"></i>Did Not Attend
+                                    </span>
+                                {% else %}
+                                    <span style="color: var(--danger-red); font-weight: 500;">
+                                        <i class="fas fa-exclamation-triangle me-1"></i>Not Completed
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% if attempt.status == 'completed' %}
+                            <div class="activity-score" style="background: var(--success-gradient);">
+                                {{ attempt.percentage|round(1) }}%
+                                <div style="font-size: 0.8rem; margin-top: 0.25rem;">
+                                    {{ attempt.obtained_marks or 0 }}/{{ attempt.total_marks or 0 }} marks
+                                </div>
+                            </div>
+                        {% elif attempt.status == 'in_progress' %}
+                            <div class="activity-score" style="background: var(--warning-gradient);">
+                                <a href="/take_quiz/{{ attempt.attempt_id }}" style="color: white; text-decoration: none;">
+                                    Continue Quiz
+                                </a>
+                            </div>
+                        {% elif not attempt.started_at %}
+                            <div class="activity-score" style="background: var(--neutral-gray);">
+                                Not Started
+                            </div>
+                        {% elif attempt.status == 'expired' %}
+                            <div class="activity-score" style="background: var(--btn-danger);">
+                                Expired
+                            </div>
+                        {% else %}
+                            <div class="activity-score" style="background: var(--btn-danger);">
+                                Incomplete
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <h4>No Quiz Attempts Yet</h4>
+                        <p>Start your learning journey by joining your first quiz!</p>
+                        <a href="/attend_quiz" class="btn btn-primary">
+                            <i class="fas fa-play-circle me-2"></i>
+                            Join Your First Quiz
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize dashboard statistics
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatistics();
+            animateElements();
+        });
+
+        function updateStatistics() {
+            const attempts = {{ attempts|length if attempts else 0 }};
+            const completedAttempts = {{ attempts|selectattr('status', 'equalto', 'completed')|list|length if attempts else 0 }};
+            const notAttendedAttempts = {{ attempts|selectattr('started_at', 'equalto', None)|list|length if attempts else 0 }};
+            
+            // Calculate statistics
+            document.getElementById('totalQuizzes').textContent = attempts;
+            document.getElementById('completedQuizzes').textContent = completedAttempts;
+            document.getElementById('notAttendedQuizzes').textContent = notAttendedAttempts;
+            
+            // Calculate average score
+            {% if attempts %}
+                let totalScore = 0;
+                let scoreCount = 0;
+                {% for attempt in attempts %}
+                    {% if attempt.status == 'completed' and attempt.percentage %}
+                        totalScore += {{ attempt.percentage }};
+                        scoreCount++;
+                    {% endif %}
+                {% endfor %}
+                const averageScore = scoreCount > 0 ? (totalScore / scoreCount).toFixed(1) : 0;
+                document.getElementById('averageScore').textContent = averageScore + '%';
+            {% else %}
+                document.getElementById('averageScore').textContent = '0%';
+            {% endif %}
+        }
+
+        function animateElements() {
+            // Animate statistics
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const finalValue = stat.textContent;
+                const isPercentage = finalValue.includes('%');
+                const numericValue = parseInt(finalValue.replace(/[^0-9]/g, ''));
+                
+                let currentValue = 0;
+                const increment = numericValue / 50;
+                const timer = setInterval(() => {
+                    currentValue += increment;
+                    if (currentValue >= numericValue) {
+                        currentValue = numericValue;
+                        clearInterval(timer);
+                    }
+                    stat.textContent = Math.floor(currentValue) + (isPercentage ? '%' : '');
+                }, 30);
+            });
+
+            // Animate cards on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            document.querySelectorAll('.action-card, .activity-item').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+        }
+
+        function showLeaderboard() {
+            // Redirect to leaderboard page
+            window.location.href = '/leaderboard';
+        }
+
+        function showDetailedProgress() {
+            // Fetch detailed progress from API
+            fetch('/student_progress')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showProgressModal(data.statistics, data.progress_data);
+                    } else {
+                        alert('Failed to load progress data');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading progress:', error);
+                    alert('Error loading progress data');
+                });
+        }
+
+        function showProgressModal(statistics, progressData) {
+            // Create modal with real progress data
+            const modal = document.createElement('div');
+            modal.innerHTML = `
+                <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+                    <div style="background: white; padding: 2rem; border-radius: 15px; max-width: 700px; width: 90%; max-height: 80vh; overflow-y: auto;">
+                        <h3 style="color: #667eea; margin-bottom: 1.5rem; text-align: center;">Your Learning Progress</h3>
+                        
+                        <div style="margin-bottom: 2rem;">
+                            <h4 style="color: #2c3e50; margin-bottom: 1rem;">Performance Summary</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                                <div style="text-align: center; padding: 1rem; background: #f8f9fa; border-radius: 10px;">
+                                    <div style="font-size: 2rem; font-weight: bold; color: #667eea;">${statistics.completed}</div>
+                                    <div style="font-size: 0.9rem; color: #6c757d;">Completed Quizzes</div>
+                                </div>
+                                <div style="text-align: center; padding: 1rem; background: #f8f9fa; border-radius: 10px;">
+                                    <div style="font-size: 2rem; font-weight: bold; color: #667eea;">${statistics.in_progress + statistics.expired}</div>
+                                    <div style="font-size: 0.9rem; color: #6c757d;">In Progress/Expired</div>
+                                </div>
+                                <div style="text-align: center; padding: 1rem; background: #f8f9fa; border-radius: 10px;">
+                                    <div style="font-size: 2rem; font-weight: bold; color: #667eea;">${statistics.total_attempts}</div>
+                                    <div style="font-size: 0.9rem; color: #6c757d;">Total Attempts</div>
+                                </div>
+                            </div>
+                            
+                            <h4 style="color: #2c3e50; margin-bottom: 1rem;">Score Statistics</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                                <div style="text-align: center; padding: 1rem; background: #e9ecef; border-radius: 10px;">
+                                    <div style="font-size: 1.2rem; font-weight: bold; color: #667eea;">${statistics.average_score}%</div>
+                                    <div style="font-size: 0.9rem; color: #6c757d;">Average Score</div>
+                                </div>
+                                <div style="text-align: center; padding: 1rem; background: #e9ecef; border-radius: 10px;">
+                                    <div style="font-size: 1.2rem; font-weight: bold; color: #667eea;">${statistics.best_score}%</div>
+                                    <div style="font-size: 0.9rem; color: #6c757d;">Best Score</div>
+                                </div>
+                                <div style="text-align: center; padding: 1rem; background: #e9ecef; border-radius: 10px;">
+                                    <div style="font-size: 1.2rem; font-weight: bold; color: #667eea;">${statistics.total_questions_attempted}</div>
+                                    <div style="font-size: 0.9rem; color: #6c757d;">Questions Attempted</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 2rem;">
+                            <h4 style="color: #2c3e50; margin-bottom: 1rem;">Quiz History</h4>
+                            <div style="max-height: 300px; overflow-y: auto; border: 1px solid #e9ecef; border-radius: 10px; padding: 1rem;">
+                                ${progressData.map((attempt, index) => `
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f1f3f4; ${index < progressData.length - 1 ? '' : 'border-bottom: none'}">
+                                        <div>
+                                            <strong>${attempt.quiz_title}</strong>
+                                            <div style="color: #6c757d; font-size: 0.9rem;">
+                                                ${attempt.quiz_subject} • ${attempt.total_questions} questions
+                                                ${getStatusBadge(attempt.attempt.status)}
+                                            </div>
+                                        </div>
+                                        <div style="font-size: 0.8rem; color: #6c757d;">
+                                            ${attempt.attempt.completed_at ? new Date(attempt.attempt.completed_at).toLocaleDateString() : 'Not completed'}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin-top: 2rem;">
+                            <button onclick="this.parentElement.parentElement.remove()" style="background: #667eea; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 8px; cursor: pointer;">Close</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function getStatusBadge(status) {
+            switch(status) {
+                case 'completed':
+                    return '<i class="fas fa-check-circle"></i> Completed';
+                case 'in_progress':
+                    return '<i class="fas fa-clock"></i> In Progress';
+                case 'expired':
+                    return '<i class="fas fa-hourglass-end"></i> Expired';
+                default:
+                    return '<i class="fas fa-times-circle"></i> Not Started';
+            }
+        }
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + J to join quiz
+            if ((e.ctrlKey || e.metaKey) && e.key === 'j') {
+                e.preventDefault();
+                window.location.href = '/attend_quiz';
+            }
+        });
+    </script>
+</body>
+</html>

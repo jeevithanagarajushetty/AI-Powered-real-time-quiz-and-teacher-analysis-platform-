@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Quiz - AI Quiz Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .join-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            margin-top: 10vh;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .quiz-icon {
+            font-size: 4rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e1e5e9;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .btn-join {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .btn-join:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        .btn-join:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .alert {
+            border-radius: 10px;
+            border: none;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            transform: scale(1.1);
+        }
+        .loading-spinner {
+            display: none;
+        }
+        .code-input {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <a href="/student" class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <div class="container">
+        <div class="join-container">
+            <div class="text-center mb-4">
+                <div class="quiz-icon">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <h2 class="mb-3">Join Quiz</h2>
+                <p class="text-muted">Enter your quiz code to start the quiz</p>
+            </div>
+
+            <div id="alert-container"></div>
+
+            <form id="joinQuizForm">
+                <div class="mb-4">
+                    <label for="quizCode" class="form-label fw-bold">
+                        <i class="fas fa-key me-2"></i>Quiz Code
+                    </label>
+                    <input type="text" 
+                           class="form-control code-input" 
+                           id="quizCode" 
+                           name="quiz_code"
+                           placeholder="ENTER CODE"
+                           maxlength="10"
+                           required
+                           autocomplete="off">
+                    <div class="form-text text-center mt-2">
+                        Enter the 6-digit quiz code provided by your teacher
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-join" id="joinBtn">
+                    <span class="btn-text">
+                        <i class="fas fa-play-circle me-2"></i>Join Quiz
+                    </span>
+                    <span class="loading-spinner">
+                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        Joining...
+                    </span>
+                </button>
+            </form>
+
+            <div class="text-center mt-4">
+                <small class="text-muted">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Make sure you have the correct quiz code before joining
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('joinQuizForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            console.log('DEBUG: Form submission started');
+            
+            const quizCode = document.getElementById('quizCode').value.trim();
+            const joinBtn = document.getElementById('joinBtn');
+            const btnText = joinBtn.querySelector('.btn-text');
+            const loadingSpinner = joinBtn.querySelector('.loading-spinner');
+            const alertContainer = document.getElementById('alert-container');
+            
+            console.log('DEBUG: Quiz code entered:', quizCode);
+            
+            // Hide any existing alerts
+            alertContainer.innerHTML = '';
+            
+            // Validate quiz code
+            if (!quizCode) {
+                console.log('DEBUG: No quiz code provided');
+                showAlert('Please enter a quiz code', 'warning');
+                return;
+            }
+            
+            if (quizCode.length < 4) {
+                console.log('DEBUG: Quiz code too short');
+                showAlert('Quiz code must be at least 4 characters', 'warning');
+                return;
+            }
+            
+            // Show loading state
+            joinBtn.disabled = true;
+            btnText.style.display = 'none';
+            loadingSpinner.style.display = 'inline';
+            
+            try {
+                console.log('DEBUG: Sending POST request to /attend_quiz');
+                
+                const response = await fetch('/attend_quiz', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `quiz_code=${encodeURIComponent(quizCode)}`
+                });
+                
+                console.log('DEBUG: Response received:', response.status, response.statusText);
+                
+                // Check if we're being redirected to login (not authenticated)
+                if (response.status === 302 || response.redirected) {
+                    console.log('DEBUG: User not authenticated, redirecting to login');
+                    showAlert('Please login to join a quiz', 'warning');
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 1500);
+                    return;
+                }
+                
+                if (!response.ok) {
+                    console.log('DEBUG: Response not OK:', response.status);
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('DEBUG: Response data:', data);
+                
+                if (data.success) {
+                    console.log('DEBUG: Attempt ID:', data.attempt_id);
+                    showAlert('Quiz found! Redirecting...', 'success');
+                    
+                    // Redirect to take quiz page
+                    setTimeout(() => {
+                        console.log('DEBUG: Redirecting to:', `/take_quiz/${data.attempt_id}`);
+                        window.location.href = `/take_quiz/${data.attempt_id}`;
+                    }, 1500);
+                } else {
+                    console.log('DEBUG: Error response:', data);
+                    showAlert(data.message || 'Failed to join quiz', 'danger');
+                }
+            } catch (error) {
+                console.error('DEBUG: Error joining quiz:', error);
+                console.error('DEBUG: Error details:', error.stack);
+                showAlert('Network error. Please try again.', 'danger');
+            } finally {
+                // Reset button state
+                joinBtn.disabled = false;
+                btnText.style.display = 'inline';
+                loadingSpinner.style.display = 'none';
+                console.log('DEBUG: Form submission completed');
+            }
+        });
+        
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alert-container');
+            const alertHtml = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'times-circle'} me-2"></i>
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            alertContainer.innerHTML = alertHtml;
+        }
+        
+        // Auto-format quiz code input
+        document.getElementById('quizCode').addEventListener('input', function(e) {
+            this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+        });
+        
+        // Allow only alphanumeric characters
+        document.getElementById('quizCode').addEventListener('keypress', function(e) {
+            const char = String.fromCharCode(e.which);
+            if (!/[A-Z0-9]/i.test(char)) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
